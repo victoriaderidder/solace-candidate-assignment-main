@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Header } from "./components/header.component";
+import { Table, TableRow, TableCell } from "./components/table.component";
 
 interface Advocate {
   firstName: string;
@@ -10,6 +12,7 @@ interface Advocate {
   specialties: string[];
   yearsOfExperience: number;
   phoneNumber: string;
+  id: number;
 }
 
 export default function Home() {
@@ -48,69 +51,66 @@ export default function Home() {
           specialty.toLowerCase().includes(val)
         ) ||
         advocate.yearsOfExperience.toString().includes(val) ||
-        advocate.phoneNumber.toLowerCase().includes(val)
+        advocate.phoneNumber.toString().includes(val)
       );
     });
 
     setFilteredAdvocates(filteredAdvocates);
   };
 
-  const onClick = () => {
+  const handleReset = () => {
     console.log(advocates);
     setFilteredAdvocates(advocates);
   };
 
+  const headers = [
+    "First Name",
+    "Last Name",
+    "City",
+    "Degree",
+    "Specialties",
+    "Years of Experience",
+    "Phone Number",
+  ];
+
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <br />
-      <br />
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term"></span>
-        </p>
-        <input
-          style={{ border: "1px solid black" }}
-          onChange={onChange}
-          value={searchTerm}
-        />
-        <button onClick={onClick}>Reset Search</button>
+    <main>
+      <Header
+        searchTerm={searchTerm}
+        onSearch={onChange}
+        onReset={handleReset}
+      />
+      <div className="content" style={{ margin: "24px" }}>
+        <Table headers={headers}>
+          {filteredAdvocates.map((advocate: Advocate) => (
+            <TableRow key={advocate.id}>
+              <TableCell>{advocate.firstName}</TableCell>
+              <TableCell>{advocate.lastName}</TableCell>
+              <TableCell>{advocate.city}</TableCell>
+              <TableCell>{advocate.degree}</TableCell>
+              <TableCell>
+                {advocate.specialties.map((specialty, index) => (
+                  <div
+                    key={`${specialty}-${index}`}
+                    style={{
+                      padding: "2px 8px",
+                      margin: "2px",
+                      backgroundColor: "#f3f4f6",
+                      borderRadius: "4px",
+                      display: "inline-block",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {specialty}
+                  </div>
+                ))}
+              </TableCell>
+              <TableCell>{advocate.yearsOfExperience}</TableCell>
+              <TableCell>{advocate.phoneNumber}</TableCell>
+            </TableRow>
+          ))}
+        </Table>
       </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>City</th>
-            <th>Degree</th>
-            <th>Specialties</th>
-            <th>Years of Experience</th>
-            <th>Phone Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate: Advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
     </main>
   );
 }
