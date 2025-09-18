@@ -1,10 +1,7 @@
+import SearchContextType from "../../types/search.types";
 import { createContext, useContext, ReactNode } from "react";
 
-interface SearchContextType {
-  searchTerm: string;
-  onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onReset: () => void;
-}
+// Added to avoid prop drilling from Header -> Search
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
