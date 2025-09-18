@@ -4,10 +4,6 @@ import { useSearch } from "./search.context";
 export const Search = () => {
   const { searchTerm, onSearch, onReset } = useSearch();
 
-  //   const handleReset = () => {
-  //   onReset();
-  // };
-
   return (
     <div>
       <input
