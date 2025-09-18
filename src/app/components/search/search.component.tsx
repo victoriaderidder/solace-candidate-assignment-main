@@ -1,10 +1,8 @@
-interface SearchProps {
-  searchTerm: string;
-  onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onReset: () => void;
-}
+import { useSearch } from "./search.context";
 
-export const Search = ({ searchTerm, onSearch, onReset }: SearchProps) => {
+export const Search = () => {
+  const { searchTerm, onSearch, onReset } = useSearch();
+
   return (
     <div>
       <input

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "./components/header.component";
 import { Table, TableRow, TableCell } from "./components/table.component";
+import { SearchProvider } from "./components/search/search.context";
 
 interface Advocate {
   firstName: string;
@@ -73,37 +74,41 @@ export default function Home() {
     "Phone Number",
   ];
 
+  const searchValue = {
+    searchTerm,
+    onSearch: onChange,
+    onReset: handleReset,
+  };
+
   return (
-    <main>
-      <Header
-        searchTerm={searchTerm}
-        onSearch={onChange}
-        onReset={handleReset}
-      />
-      <div className="content" style={{ margin: "24px" }}>
-        <Table headers={headers}>
-          {filteredAdvocates.map((advocate: Advocate) => (
-            <TableRow key={advocate.id}>
-              <TableCell>{advocate.firstName}</TableCell>
-              <TableCell>{advocate.lastName}</TableCell>
-              <TableCell>{advocate.city}</TableCell>
-              <TableCell>{advocate.degree}</TableCell>
-              <TableCell>
-                {advocate.specialties.map((specialty, index) => (
-                  <div
-                    key={`${specialty}-${index}`}
-                    className="px-2 m-1 bg-gray-100 rounded inline-block text-xs"
-                  >
-                    {specialty}
-                  </div>
-                ))}
-              </TableCell>
-              <TableCell>{advocate.yearsOfExperience}</TableCell>
-              <TableCell>{advocate.phoneNumber}</TableCell>
-            </TableRow>
-          ))}
-        </Table>
-      </div>
-    </main>
+    <SearchProvider value={searchValue}>
+      <main>
+        <Header />
+        <div className="content" style={{ margin: "24px" }}>
+          <Table headers={headers}>
+            {filteredAdvocates.map((advocate: Advocate) => (
+              <TableRow key={advocate.id}>
+                <TableCell>{advocate.firstName}</TableCell>
+                <TableCell>{advocate.lastName}</TableCell>
+                <TableCell>{advocate.city}</TableCell>
+                <TableCell>{advocate.degree}</TableCell>
+                <TableCell>
+                  {advocate.specialties.map((specialty, index) => (
+                    <div
+                      key={`${specialty}-${index}`}
+                      className="px-2 m-1 bg-gray-100 rounded inline-block text-xs"
+                    >
+                      {specialty}
+                    </div>
+                  ))}
+                </TableCell>
+                <TableCell>{advocate.yearsOfExperience}</TableCell>
+                <TableCell>{advocate.phoneNumber}</TableCell>
+              </TableRow>
+            ))}
+          </Table>
+        </div>
+      </main>
+    </SearchProvider>
   );
 }
