@@ -9,13 +9,12 @@ interface Advocate {
   degree: string;
   specialties: string[];
   yearsOfExperience: number;
-  phoneNumber: string;
-  id?: string;
 }
 
 export default function Home() {
   const [advocates, setAdvocates] = useState([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     console.log("fetching advocates...");
@@ -27,20 +26,27 @@ export default function Home() {
     });
   }, []);
 
-  const onChange = (e: { target: { value: any } }) => {
-    const searchTerm = e.target.value;
-
-    document.getElementById("search-term").innerHTML = searchTerm;
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setSearchTerm(val);
 
     console.log("filtering advocates...");
     const filteredAdvocates = advocates.filter((advocate: Advocate) => {
+      // added for scalability: what if there are thousands of Johns?
+      // It would also be nice to be able to filter by city (a dropdown?)
+      const fullName =
+        `${advocate.firstName} ${advocate.lastName}`.toLowerCase();
+
       return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.toString().includes(searchTerm)
+        advocate.firstName.toLowerCase().includes(val) ||
+        advocate.lastName.toLowerCase().includes(val) ||
+        fullName.toLowerCase().includes(val) ||
+        advocate.city.toLowerCase().includes(val) ||
+        advocate.degree.toLowerCase().includes(val) ||
+        advocate.specialties.some((specialty) =>
+          specialty.toLowerCase().includes(val)
+        ) ||
+        advocate.yearsOfExperience.toString().includes(val)
       );
     });
 
@@ -62,7 +68,11 @@ export default function Home() {
         <p>
           Searching for: <span id="search-term"></span>
         </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
+        <input
+          style={{ border: "1px solid black" }}
+          onChange={onChange}
+          value={searchTerm}
+        />
         <button onClick={onClick}>Reset Search</button>
       </div>
       <br />
