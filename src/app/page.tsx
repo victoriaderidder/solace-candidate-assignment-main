@@ -9,6 +9,7 @@ interface Advocate {
   degree: string;
   specialties: string[];
   yearsOfExperience: number;
+  phoneNumber: string;
 }
 
 export default function Home() {
@@ -46,7 +47,8 @@ export default function Home() {
         advocate.specialties.some((specialty) =>
           specialty.toLowerCase().includes(val)
         ) ||
-        advocate.yearsOfExperience.toString().includes(val)
+        advocate.yearsOfExperience.toString().includes(val) ||
+        advocate.phoneNumber.toLowerCase().includes(val)
       );
     });
 
@@ -79,13 +81,15 @@ export default function Home() {
       <br />
       <table>
         <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>City</th>
+            <th>Degree</th>
+            <th>Specialties</th>
+            <th>Years of Experience</th>
+            <th>Phone Number</th>
+          </tr>
         </thead>
         <tbody>
           {filteredAdvocates.map((advocate: Advocate) => {
