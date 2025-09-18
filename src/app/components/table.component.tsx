@@ -1,9 +1,5 @@
 import { ReactNode } from "react";
-
-interface TableProps {
-  headers: string[];
-  children: ReactNode;
-}
+import TableProps from "../types/table.types";
 
 // Added to stop table from resizing on search
 const columnWidths = {

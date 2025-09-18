@@ -4,6 +4,7 @@ interface SearchContextType {
   searchTerm: string;
   onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onReset: () => void;
+  setSearchTerm: (term: string) => void;
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);

@@ -4,32 +4,19 @@ import { useEffect, useState } from "react";
 import { Header } from "./components/header.component";
 import { Table, TableRow, TableCell } from "./components/table.component";
 import { SearchProvider } from "./components/search/search.context";
-
-interface Advocate {
-  firstName: string;
-  lastName: string;
-  city: string;
-  degree: string;
-  specialties: string[];
-  yearsOfExperience: number;
-  phoneNumber: string;
-  id: number;
-}
+import { useAdvocates } from "./hooks/advocates.hooks";
+import Advocate from "./types/advocate.types";
 
 export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
+  const { advocates, isLoading, error } = useAdvocates();
 
   useEffect(() => {
-    console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
-      });
-    });
-  }, []);
+    setFilteredAdvocates(advocates);
+  }, [advocates]);
+
+  console.log(isLoading, error, advocates);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -77,7 +64,10 @@ export default function Home() {
   const searchValue = {
     searchTerm,
     onSearch: onChange,
-    onReset: handleReset,
+    onReset: () => {
+      setSearchTerm("");
+      setFilteredAdvocates(advocates);
+    },
   };
 
   return (
@@ -85,28 +75,41 @@ export default function Home() {
       <main>
         <Header />
         <div className="content" style={{ margin: "24px" }}>
-          <Table headers={headers}>
-            {filteredAdvocates.map((advocate: Advocate) => (
-              <TableRow key={advocate.id}>
-                <TableCell>{advocate.firstName}</TableCell>
-                <TableCell>{advocate.lastName}</TableCell>
-                <TableCell>{advocate.city}</TableCell>
-                <TableCell>{advocate.degree}</TableCell>
-                <TableCell>
-                  {advocate.specialties.map((specialty, index) => (
-                    <div
-                      key={`${specialty}-${index}`}
-                      className="px-2 m-1 bg-gray-100 rounded inline-block text-xs"
-                    >
-                      {specialty}
-                    </div>
-                  ))}
-                </TableCell>
-                <TableCell>{advocate.yearsOfExperience}</TableCell>
-                <TableCell>{advocate.phoneNumber}</TableCell>
-              </TableRow>
-            ))}
-          </Table>
+          {isLoading && (
+            <div className="flex justify-center items-center">
+              <p className="text-gray-600">Loading advocates...</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+              {error}
+            </div>
+          )}
+          {!isLoading && !error && (
+            <Table headers={headers}>
+              {filteredAdvocates.map((advocate: Advocate) => (
+                <TableRow key={advocate.id}>
+                  <TableCell>{advocate.firstName}</TableCell>
+                  <TableCell>{advocate.lastName}</TableCell>
+                  <TableCell>{advocate.city}</TableCell>
+                  <TableCell>{advocate.degree}</TableCell>
+                  <TableCell>
+                    {advocate.specialties.map((specialty, index) => (
+                      <div
+                        key={`${specialty}-${index}`}
+                        className="px-2 m-1 bg-gray-100 rounded inline-block text-xs"
+                      >
+                        {specialty}
+                      </div>
+                    ))}
+                  </TableCell>
+                  <TableCell>{advocate.yearsOfExperience}</TableCell>
+                  <TableCell>{advocate.phoneNumber}</TableCell>
+                </TableRow>
+              ))}
+            </Table>
+          )}
         </div>
       </main>
     </SearchProvider>
