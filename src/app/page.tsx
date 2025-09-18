@@ -46,11 +46,6 @@ export default function Home() {
     setFilteredAdvocates(filteredAdvocates);
   };
 
-  const handleReset = () => {
-    console.log(advocates);
-    setFilteredAdvocates(advocates);
-  };
-
   const headers = [
     "First Name",
     "Last Name",
