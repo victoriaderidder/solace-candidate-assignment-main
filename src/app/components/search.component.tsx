@@ -8,14 +8,7 @@ export const Search = ({ searchTerm, onSearch, onReset }: SearchProps) => {
   return (
     <div>
       <input
-        style={{
-          padding: "8px 12px",
-          border: "1px solid white",
-          borderRadius: "4px",
-          backgroundColor: "rgba(255,255,255,0.1)",
-          color: "white",
-          outline: "none",
-        }}
+        className="px-3 py-2 border border-white rounded bg-white/10 text-white outline-none placeholder-white/70"
         type="text"
         placeholder="Search advocates..."
         value={searchTerm}
@@ -24,17 +17,7 @@ export const Search = ({ searchTerm, onSearch, onReset }: SearchProps) => {
 
       <button
         onClick={onReset}
-        style={{
-          padding: "8px 16px",
-          marginLeft: "6px",
-          border: "1px solid rgba(255,255,255,0.3)",
-          borderRadius: "6px",
-          backgroundColor: "rgba(255,255,255,0.1)",
-          color: "white",
-          fontSize: "14px",
-          cursor: "pointer",
-          transition: "all 0.2s ease",
-        }}
+        className="px-4 py-2 ml-1.5 border border-white/30 rounded-md bg-white/10 text-white text-sm cursor-pointer transition-all duration-200 hover:bg-white/20"
       >
         Reset
       </button>

@@ -92,14 +92,7 @@ export default function Home() {
                 {advocate.specialties.map((specialty, index) => (
                   <div
                     key={`${specialty}-${index}`}
-                    style={{
-                      padding: "2px 8px",
-                      margin: "2px",
-                      backgroundColor: "#f3f4f6",
-                      borderRadius: "4px",
-                      display: "inline-block",
-                      fontSize: "12px",
-                    }}
+                    className="px-2 m-1 bg-gray-100 rounded inline-block text-xs"
                   >
                     {specialty}
                   </div>
