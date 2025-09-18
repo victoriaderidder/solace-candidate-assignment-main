@@ -1,5 +1,6 @@
 import { useSearch } from "./search.context";
 
+// Added to avoid prop drilling from Header -> Search
 export const Search = () => {
   const { searchTerm, onSearch, onReset } = useSearch();
 

@@ -33,7 +33,7 @@ export default function Home() {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    setSearchTerm(val);
+    setSearchTerm(val.toLowerCase());
 
     console.log("filtering advocates...");
     const filteredAdvocates = advocates.filter((advocate: Advocate) => {
